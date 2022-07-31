@@ -15,12 +15,13 @@ class Performance(models.Model):
     name = models.CharField(max_length=20, primary_key=True)
     year = models.IntegerField()
     duration = models.IntegerField()
+    link = models.URLField(blank=True)
 
 class Background(models.Model):
     type = models.CharField(max_length=20)
 
 class Category(models.Model):
-    name = models.CharField(max_length=20, primary_key=True)
+    name = models.CharField(max_length=30, primary_key=True)
 
 class QuestionCategory(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -41,4 +42,4 @@ class PerformanceCharacteristic(models.Model):
     performance = models.ForeignKey(Performance, on_delete=models.CASCADE)
     attribute = models.ForeignKey(Attribute, on_delete=models.CASCADE)
 
-    value = models.IntegerField()
+    value = models.CharField(max_length=30)

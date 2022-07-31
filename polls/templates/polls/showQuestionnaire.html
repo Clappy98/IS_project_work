@@ -1,0 +1,38 @@
+{% enxtends "polls/base.html" %}
+
+{% block title %}
+    Questionnaire
+{% endblock title %}
+
+{% block content %}
+    <h1>Questionario su {{performance.name}}</h1>
+
+    <div style="width:40%; float:left; word-break: break-all; border:1px solid black">
+        <iframe width="80%" height="300" src="{{performance.link}}" title="{{performance.name}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p>Name: {{performance.name}}</p>
+        <p>Year: {{performance.year}}</p>
+        <p>Music Genre: {{musicGenre}}</p>
+        <p>AI Technique: {{AITechinque}}</p>
+    </div>
+
+    <div style="overflow-y:scroll; width:55%; height:100px; float:right; border:1px solid black;  word-break: break-all">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for category in categories %}
+                <div>
+                    <h3>{{category.name}}</h3>
+                    {% for entry in category.questioncategory_set.all %}
+                        <p>{{entry.question.text}}</p>
+                        {% for i in likertValues %}
+                            <input type="radio" id="{{entry.question.text}}_{{i}}" name="{{entry.question.text}}" value="{{i}}" required>
+                            <label for="{{entry.question.text}}_{{i}}">{{i}}</label>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+                <br>
+            {% endfor %}
+            <input type="submit" value="Avanti">
+            <input type="reset" value="Pulisci risposte">
+        </form>
+    </div>
+{% endblock content %}

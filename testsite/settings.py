@@ -12,6 +12,41 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import re
+
+
+'''
+Read the configuration file for setting the database
+'''
+engine = ''
+name = ''
+user = ''
+password = ''
+host = ''
+port = ''
+
+with open('./database.conf') as f:
+    content = f.readline()
+    pattern = 'DATABASE\(\
+(?P<engine>\w+),\
+ (?P<name>\w+),\
+ (?P<user>\w+),\
+ (?P<password>\w+),\
+ (?P<host>(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])),\
+ (?P<port>[0-9]{1,5})\)'
+
+    options = re.search(pattern, content)
+    if options is None:
+        raise ValueError("Database improperly configured in 'settings.conf'")
+    else:
+        engine = options.group('engine')
+        name = options.group('name')
+        user = options.group('user')
+        password = options.group('password')
+        host = options.group('host')
+        port = options.group('port')
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,13 +67,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'mod_wsgi.server'
 ]
 
 MIDDLEWARE = [
@@ -77,12 +112,12 @@ WSGI_APPLICATION = 'testsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ispw_db',
-        'USER': 'mydatabaseuser',   # IMPORTANT: FIND THE USERNAME
-        'PASSWORD': 'P455_postgres',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': f'django.db.backends.{engine}',
+        'NAME': name,
+        'USER': user,
+        'PASSWORD': password,
+        'HOST': host,
+        'PORT': port,
     }
 }
 
@@ -127,3 +162,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"

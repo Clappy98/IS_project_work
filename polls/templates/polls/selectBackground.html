@@ -1,0 +1,20 @@
+{% enxtends "polls/base.html" %}
+
+{% block title %}
+    Background selection
+{% endblock title %}
+
+{% block content %}
+    <h1>Scelta background</h1>
+
+    <form action="" method="">
+        {% csrf_token %}
+
+        {% for bg in backgrounds %}
+            <input type="radio" id="bg_{{bg.name}}" name="background" value="{{bg.name}}" required>
+            <label for="bg_{{bg.name}}">{{bg.name}}</label>
+        {% endfor %}
+
+        <input type="submit" value="Avanti">
+    </form>
+{% endblock content %}

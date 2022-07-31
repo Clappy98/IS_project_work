@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <!-- INSERT HEAD INFO HERE -->
+        <title>
+            {% block title %}
+                children template should override this block
+            {% endblock title %}
+        </title>
+    </head>
+
+    <body>
+        {% block header %}
+            <div id="header">
+                define base header here
+            </div>
+        {% endblock header %}
+
+        {% block content %}
+            <div id="content">
+                children templates should override this block
+            </div>
+        {% endblock content %}
+
+        {% block footer %}
+            <div id="footer">
+                define base footer here
+            </div>
+        {% endblock footer %}
+    </body>
+</html>
