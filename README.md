@@ -2,14 +2,14 @@
 ### Settings
 Per settare il database da utilizzare:
 1. Creare un file `database.conf`
-2. All'interno del file specificare il database da utilizzare utilizzando la seguende sintassi:
+2. All'interno del file specificare il database da utilizzare utilizzando la seguende sintassi:<br>
 `DATABASE(engine, databaseName, username, password, host, port)`
--- `engine` : il database backend da utilizzare, consultare la [documentazione](https://docs.djangoproject.com/en/4.0/topics/install/#database-installation) per ulteriori informazioni. Al momento è stato testato il funzionamento solo con [PostgreSQL](https://www.postgresql.org/);
--- `databasename` : il nome del database da utilizzare. Assicurarsi di aver creato il database prima di procedere;
--- `username` : l'utente con cui l'applicazione andrà a svolgere le operazioni sul database;
--- `password` : la password da usare per connettersi al database;
--- `host` : che host usare per connettersi al database;
--- `port` : che porta usare per connettersi al database;
+    - `engine` : il database backend da utilizzare, consultare la [documentazione](https://docs.djangoproject.com/en/4.0/topics/install/#database-installation) per ulteriori informazioni. Al momento è stato testato il funzionamento solo con [PostgreSQL](https://www.postgresql.org/);
+    - `databasename` : il nome del database da utilizzare. Assicurarsi di aver creato il database prima di procedere;
+    - `username` : l'utente con cui l'applicazione andrà a svolgere le operazioni sul database;
+    - `password` : la password da usare per connettersi al database;
+    - `host` : che host usare per connettersi al database;
+    - `port` : che porta usare per connettersi al database;
 **N.B. Gli spazi bianchi dopo le virgole per il momento sono obbligatori**
 
 ### Schema
