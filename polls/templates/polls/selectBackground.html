@@ -1,4 +1,4 @@
-{% enxtends "polls/base.html" %}
+{% extends "polls/base.html" %}
 
 {% block title %}
     Background selection
@@ -7,7 +7,7 @@
 {% block content %}
     <h1>Scelta background</h1>
 
-    <form action="" method="">
+    <form action="{% url 'manageBackgroundSelection' userMappedStr %}" method="post">
         {% csrf_token %}
 
         {% for bg in backgrounds %}

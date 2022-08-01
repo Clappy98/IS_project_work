@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.homepage, name='homepage'),
     path('prepare/', views.prepareUser, name='prepareUser'),
-    path('<str: userMappedStr>/', include([
+    path('<str:userMappedStr>/', include([
         path('background/', include([
             path('select/', views.selectBackground, name='selectBackground'),
             path('register/', views.manageBackgroundSelection, name='manageBackgroundSelection'),

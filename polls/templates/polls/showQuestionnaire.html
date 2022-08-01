@@ -1,4 +1,4 @@
-{% enxtends "polls/base.html" %}
+{% extends "polls/base.html" %}
 
 {% block title %}
     Questionnaire
@@ -12,11 +12,11 @@
         <p>Name: {{performance.name}}</p>
         <p>Year: {{performance.year}}</p>
         <p>Music Genre: {{musicGenre}}</p>
-        <p>AI Technique: {{AITechinque}}</p>
+        <p>AI Technique: {{AITechnique}}</p>
     </div>
 
-    <div style="overflow-y:scroll; width:55%; height:100px; float:right; border:1px solid black;  word-break: break-all">
-        <form action="" method="post">
+    <div style="overflow-y:scroll; width:55%; height:500px; float:right; border:1px solid black;  word-break: break-all">
+        <form action="{% url 'manageQuestionnaireAnswer' userMappedStr performance.name %}" method="post">
             {% csrf_token %}
             {% for category in categories %}
                 <div>

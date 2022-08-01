@@ -25,7 +25,9 @@ def remove_user_mapping(str):
     user_mapping_dict.pop(str, None)
 
 
-user_mapping_dict = {}
+user_mapping_dict = {
+    'test':0
+}
 
 
 
@@ -52,7 +54,8 @@ def selectBackground(request, userMappedStr):
         request,
         'polls/selectBackground.html',
         context={
-            'backgrounds':Background.objects.all()
+            'backgrounds':Background.objects.all(),
+            'userMappedStr':userMappedStr
         }
     )
 
@@ -75,15 +78,15 @@ def manageBackgroundSelection(request, userMappedStr):
 # dopo aver ultimato la creazione dell'utente, viene
 # scelta una performance casuale da cui iniziare il questionario
 def prepareQuestionnaire(request, userMappedStr):
-    startingPerformance = Performance.objects.all().order_by('?').first()
+    startingPerformance = Performance.objects.all().order_by('?').first().name
 
-    return HttpResponseRedirect(request, reverse('showQuestionnaire', args=[userMappedStr, startingPerformance]))
+    return HttpResponseRedirect(reverse('showQuestionnaire', args=[userMappedStr, startingPerformance]))
 
 # mostra la pagina del questionario
 def showQuestionnaire(request, userMappedStr, performanceName):
     performance = Performance.objects.get(pk=performanceName)
-    musicGenre = performance.performancecharacteristic_set.get(name='musicGenre')
-    AITechnique = performance.performancecharacteristic_set.get(name='AItechnique')
+    musicGenre = performance.performancecharacteristic_set.get(attribute='musicGenre').value
+    AITechnique = performance.performancecharacteristic_set.get(attribute='AItechnique').value
 
     return render(
         request,
@@ -93,7 +96,8 @@ def showQuestionnaire(request, userMappedStr, performanceName):
             'musicGenre':musicGenre,
             "AITechnique":AITechnique,
             'categories':Category.objects.all().order_by('?'),
-            'likertValues':range(1,6)
+            'likertValues':range(1,6),
+            'userMappedStr':userMappedStr
         }
     )
 
@@ -117,14 +121,13 @@ def manageQuestionnaireAnswer(request, userMappedStr, performanceName):
                 )
 
         # qui si constrolla se l'utente ha finito di compilare il questionario
-        performancesViewedByTheUser = user.answer_set.values_list('performance', flat=True).distinct()
+        performancesViewedByTheUser = user.answer_set.values_list('performance', flat=True).distinct()  # ritorna un elenco di PK, non oggetti
 
         # l'utente ha fornito una risposta per tutte le performance per cui è disponibile il video
-        if performancesViewedByTheUser.count() == Performance.objects.filter(link__isnull=True).count():
+        if performancesViewedByTheUser.count() == Performance.objects.exclude(link__isnull=True).count():
             remove_user_mapping(userMappedStr)
             return HttpResponseRedirect(reverse('homepage'))
         else:
-            namesOfThePerformancesViewedByTheUser = performancesViewedByTheUser.values_list('name', flat=True)
             # rimanda l'utente ad un nuovo questionario
-            nextPerformance = Performance.objects.exclude(text__in=namesOfThePerformancesViewedByTheUser).order_by('?').first()
+            nextPerformance = Performance.objects.exclude(pk__in=performancesViewedByTheUser).order_by('?').first().name
             return HttpResponseRedirect(reverse('showQuestionnaire', args=[userMappedStr, nextPerformance]))
