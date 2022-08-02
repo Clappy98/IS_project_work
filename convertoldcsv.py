@@ -87,5 +87,6 @@ pd.DataFrame({
 pd.DataFrame({
     'PerformanceName':performances_names,
     'Duration':durations,
-    'Year':['2022' for _ in range(len(performances_names))]
+    'Year':['2022' for _ in range(len(performances_names))],
+    'Link':[None for _ in range(len(performances_names))]
 }).to_csv('performances_2022.csv')

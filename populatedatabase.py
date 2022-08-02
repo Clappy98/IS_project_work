@@ -17,12 +17,12 @@ def insert_performances(filename, sep):
         models.Performance.objects.get_or_create(
             name=row.PerformanceName,
             year=row.Year,
-            duration=row.Duration
+            duration=row.Duration,
             link=row.Link
         )
 
 
-# header = QuestionCategory - Questiontext - QuestionPhrasing
+# header = QuestionCategory - QuestionText - QuestionPhrasing
 def insert_questions_and_categories(filename, sep):  
     df = pd.read_csv(filename, sep=sep)
 
@@ -102,7 +102,6 @@ def load_preexisting_evaluation(filename, sep):
 '''
 Script starts here
 '''
-
 opts, args = getopt.getopt(
     sys.argv[1:],
     '',
@@ -110,6 +109,7 @@ opts, args = getopt.getopt(
         'Questions_and_categories_csv=',
         'Attribute_csv=',
         'Performance_csv=',
+        'Preexisting_eval_csv='
     ]
 )
 
@@ -148,12 +148,15 @@ for opt in opts:
 
         print(f'Loaded performances')
 
+    elif(opt[0] == '--Preexisting_eval_csv'):
+        print(f"Loading evaluations from <{opt[1]}>")
+
+        load_preexisting_evaluation(
+            filename=opt[1],
+            sep=';'
+        )
+
+        print(f"Loaded evaluations")
+
     else:
         raise ValueError(f"<{opt[0]}> is not a supported argument")
-
-# legge i file per caricare le valutazioni preesistenti
-if len(args)>0:
-    for filename in args:
-        print(f"Loading evaluations from <{opt[1]}>")
-        load_preexisting_evaluation(filename, ';')
-        print(f"Loaded evaluations")
