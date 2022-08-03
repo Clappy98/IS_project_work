@@ -7,14 +7,15 @@
 {% block content %}
     <h1>Scelta background</h1>
 
-    <form action="{% url 'manageBackgroundSelection' userMappedStr %}" method="post">
-        {% csrf_token %}
-
+    <div class="row m-5" style="height:100%">
         {% for bg in backgrounds %}
-            <input type="radio" id="bg_{{bg.name}}" name="background" value="{{bg.name}}" required>
-            <label for="bg_{{bg.name}}">{{bg.name}}</label>
+            <div class="col-sm-4 px-5">
+                <div class="card border border-4 border-primary" style="height:100%">
+                    <img class="card-img-top" style="object-fit:cover" height="100%" src="{{bg.name|lower}}_bg.jpg" alt="{{bg.name}}">
+                    <div class="card-footer bg-primary text-white text-center">{{bg.name|upper}}</div>
+                    <a href="{% url 'manageBackgroundSelection' userMappedStr bg.name %}" class="stretched-link"></a>
+                </div>
+            </div>
         {% endfor %}
-
-        <input type="submit" value="Avanti">
-    </form>
+    </div>
 {% endblock content %}

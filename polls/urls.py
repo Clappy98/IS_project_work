@@ -7,7 +7,7 @@ urlpatterns = [
     path('<str:userMappedStr>/', include([
         path('background/', include([
             path('select/', views.selectBackground, name='selectBackground'),
-            path('register/', views.manageBackgroundSelection, name='manageBackgroundSelection'),
+            path('register/<str:bg>', views.manageBackgroundSelection, name='manageBackgroundSelection'),
         ])),
         path('questionnaire/', include([
             path('prepare/', views.prepareQuestionnaire, name='prepareQuestionnaire'),

@@ -60,20 +60,17 @@ def selectBackground(request, userMappedStr):
     )
 
 # inserisce la relazione tra user e background nel database
-def manageBackgroundSelection(request, userMappedStr):
-    if request.method == 'POST':
-        ans = request.POST['background']
-
-        background = Background.objects.get(pk=ans)
-        userId = get_user_from_string(userMappedStr)
-        user = User.objects.get(pk=userId)
-
-        Experience.objects.create(
+def manageBackgroundSelection(request, userMappedStr, bg):
+    background = Background.objects.get(pk=bg)
+    userId = get_user_from_string(userMappedStr)
+    user = User.objects.get(pk=userId)
+    
+    Experience.objects.create(
             user=user,
             background=background
-        )
-
-        return HttpResponseRedirect(reverse('prepareQuestionnaire', args=[userMappedStr]))
+    )
+    
+    return HttpResponseRedirect(reverse('prepareQuestionnaire', args=[userMappedStr]))
 
 # dopo aver ultimato la creazione dell'utente, viene
 # scelta una performance casuale da cui iniziare il questionario

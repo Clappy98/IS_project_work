@@ -32,7 +32,7 @@ Di seguito verranno elencate le funzionalità delle viste implementate:
 - `homepage()` : renderizza la homepage del sito;
 - `prepareUser()` : genera un User da utilizzare successivamente;
 - `selectBackground(user)` : renderizza la pagina di scelta del background dell'user;
-- `manageBackgroundSelection(user)` : registra la scelta del background;
+- `manageBackgroundSelection(user, bg)` : registra la scelta del background;
 - `prepareQuestionnaire(user)` : sceglie una performance casuale da cui iniziare il questionario;
 - `showQuestionnaire(user, performance)` : renderizza la pagina mostrante il questionario per una certa performance;
 - `manageQuestionnaireAnswer(user, performance)` : registra le risposte date dall'user relative alla performance mostrata. Se l'utente ha compilato il questionario per tutte le performance disponibili, verrà indirizzato alla homepage, altrimenti verrà scelta una nuova performance;
