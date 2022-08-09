@@ -38,11 +38,16 @@ user_mapping_dict = {
 
 # gestisce la homepage del sito
 def homepage(request):
-    Background.objects.get_or_create(type='stem')
-    Background.objects.get_or_create(type='art')
-    Background.objects.get_or_create(type='other')
+    # conta se sono presenti delle performance
+    count = Performance.objects.exclude(link__isnull=True).count()
 
-    return render(request, 'polls/homepage.html')
+    return render(
+        request,
+        'polls/homepage.html',
+        context={
+            'count':count,
+        }
+    )
 
 # dopo aver cliccato su 'Avvia Questionario' viene generato
 # un utente e la sua stringa identificativa
@@ -52,23 +57,21 @@ def prepareUser(request):
     userMappedStr = get_random_string_from_user(user.pk)
     add_mapping(userMappedStr, user.pk)
 
-    return HttpResponseRedirect(reverse('selectBackground', args=[userMappedStr]))
+    bgs = Background.objects.all()
+    count = bgs.count()
+
+    # non ci sono background da scegliere
+    if(count==0):
+        return HttpResponseRedirect(reverse('prepareQuestionnaire', args=[userMappedStr]))
+    # esiste un solo background, viene fatta in automatico l'associazione
+    elif(count==1):
+        return HttpResponseRedirect(reverse('manageBackgroundSelection', args=[userMappedStr, bgs[0].type]))
+    else:
+        return HttpResponseRedirect(reverse('selectBackground', args=[userMappedStr]))
 
 # dopo la creazione dell'utente, verrà mostrata una pagina in cui 
 # verrà chiesto di scegliere il proprio background
 def selectBackground(request, userMappedStr):
-    Background.objects.get_or_create(
-        type='stem'
-    )
-
-    Background.objects.get_or_create(
-        type='art'
-    )
-
-    Background.objects.get_or_create(
-        type='other'
-    )
-
     return render(
         request,
         'polls/selectBackground.html',
@@ -90,6 +93,8 @@ def manageBackgroundSelection(request, userMappedStr, bg):
 
 # dopo aver ultimato la creazione dell'utente, viene
 # scelta una performance casuale da cui iniziare il questionario
+# è assicurato che ci sia almeno una performance, altrimenti non
+# si potrebbe arrivare a questo URL
 def prepareQuestionnaire(request, userMappedStr):
     startingPerformance = Performance.objects.all().order_by('?').first().name
 

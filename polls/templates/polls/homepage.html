@@ -8,7 +8,12 @@
     <h1>Homepage</h1>
 
     <div class="text-center" style="height:100%">
-        <a class="btn btn-primary text-center"  href="{% url 'prepareUser' %}">Start questionnaire</a>
+        {% if count > 0 %}
+            <a class="btn btn-primary text-center"  href="{% url 'prepareUser' %}">Start questionnaire</a>
+        {% else %}
+            <a class="btn btn-secondary text-center disabled" href="#">Start questionnaire</a>
+            <p class="text-cented text-secondary">(No performance available)</p>
+        {% endif %}
     </div>
     
 {% endblock content %}
