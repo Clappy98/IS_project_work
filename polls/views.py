@@ -25,7 +25,10 @@ def remove_user_mapping(str):
     global user_mapping_dict
     user_mapping_dict.pop(str, None)
 
-
+# se si resetta il server, viene svuotato
+# un utente potrebbe non essere in grado di
+# completare il questionario se accadesse durante
+# la compilazione
 user_mapping_dict = {
 }
 
