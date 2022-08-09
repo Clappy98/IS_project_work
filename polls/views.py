@@ -15,6 +15,7 @@ def get_random_string_from_user(userId):
 def add_mapping(userStr, userId):
     global user_mapping_dict
     user_mapping_dict[userStr] = userId
+    print(user_mapping_dict)
 
 def get_user_from_string(str):
     global user_mapping_dict
@@ -26,7 +27,6 @@ def remove_user_mapping(str):
 
 
 user_mapping_dict = {
-    'test':0
 }
 
 
@@ -35,6 +35,10 @@ user_mapping_dict = {
 
 # gestisce la homepage del sito
 def homepage(request):
+    Background.objects.get_or_create(type='stem')
+    Background.objects.get_or_create(type='art')
+    Background.objects.get_or_create(type='other')
+
     return render(request, 'polls/homepage.html')
 
 # dopo aver cliccato su 'Avvia Questionario' viene generato
@@ -50,6 +54,18 @@ def prepareUser(request):
 # dopo la creazione dell'utente, verrà mostrata una pagina in cui 
 # verrà chiesto di scegliere il proprio background
 def selectBackground(request, userMappedStr):
+    Background.objects.get_or_create(
+        type='stem'
+    )
+
+    Background.objects.get_or_create(
+        type='art'
+    )
+
+    Background.objects.get_or_create(
+        type='other'
+    )
+
     return render(
         request,
         'polls/selectBackground.html',
@@ -65,10 +81,7 @@ def manageBackgroundSelection(request, userMappedStr, bg):
     userId = get_user_from_string(userMappedStr)
     user = User.objects.get(pk=userId)
     
-    Experience.objects.create(
-            user=user,
-            background=background
-    )
+    Experience.objects.create(background=background, user=user)
     
     return HttpResponseRedirect(reverse('prepareQuestionnaire', args=[userMappedStr]))
 

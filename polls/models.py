@@ -18,7 +18,7 @@ class Performance(models.Model):
     link = models.URLField(blank=True)
 
 class Background(models.Model):
-    type = models.CharField(max_length=20)
+    type = models.CharField(max_length=20, primary_key=True)
 
 class Category(models.Model):
     name = models.CharField(max_length=30, primary_key=True)

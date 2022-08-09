@@ -1,4 +1,5 @@
 {% extends "polls/base.html" %}
+{% load static %}
 
 {% block title %}
     Background selection
@@ -9,11 +10,11 @@
 
     <div class="row m-5" style="height:100%">
         {% for bg in backgrounds %}
-            <div class="col-sm-4 px-5">
+            <div class="col-sm-4 px-5" style="height:100%">
                 <div class="card border border-4 border-primary" style="height:100%">
-                    <img class="card-img-top" style="object-fit:cover" height="100%" src="{{bg.name|lower}}_bg.jpg" alt="{{bg.name}}">
-                    <div class="card-footer bg-primary text-white text-center">{{bg.name|upper}}</div>
-                    <a href="{% url 'manageBackgroundSelection' userMappedStr bg.name %}" class="stretched-link"></a>
+                    <img class="card-img-top" style="object-fit:cover" height="100%" src="{% static 'polls/images/'|add:bg.type|add:'_bg.jpg' %}" alt="{{bg.type}}">
+                    <div class="card-footer bg-primary text-white text-center">{{bg.type|upper}}</div>
+                    <a href="{% url 'manageBackgroundSelection' userMappedStr bg.type %}" class="stretched-link"></a>
                 </div>
             </div>
         {% endfor %}

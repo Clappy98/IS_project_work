@@ -11,29 +11,37 @@
     </head>
 
     <body>
-        <div class="container-fluid">
-            <div class="container-fluid" style="height:10%">
-                {% block header %}
-                    <div id="header">
-                        define base header here
-                    </div>
-                {% endblock header %}
+        <div class="container-fluid" style="height:100%">
+            <div class="row" style="height:10%">
+                <div class="container-fluid fixed-top">
+                    {% block header %}
+                        <div id="header">
+                            define base header here
+                        </div>
+                    {% endblock header %}
+                </div>
             </div>
-            
-            <div class="container-fluid" style="height:80%">
-                {% block content %}
-                    <div id="content">
-                        children templates should override this block
-                    </div>
-                {% endblock content %}
+
+
+            <div class="row" style="height:80%">
+                <div class="container-fluid" style="height:100%">
+                    {% block content %}
+                        <div id="content">
+                            children templates should override this block
+                        </div>
+                    {% endblock content %}
+                </div>
             </div>
-            
-            <div class="container-fluid" style="height:10%">
-                {% block footer %}
-                    <div id="footer">
-                        define base footer here
-                    </div>
-                {% endblock footer %}
+
+
+            <div class="row" style="height:10%">
+                <div class="container-fluid fixed-bottom">
+                    {% block footer %}
+                        <div id="footer">
+                            define base footer here
+                        </div>
+                    {% endblock footer %}
+                </div>
             </div>
         </div>
 
