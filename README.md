@@ -54,7 +54,7 @@ Questo script va eseguito nella stessa cartella in cui sono presenti i dataset d
 
 ### populatedatabase.py
 Questo script serve per popolare il database utilizzando dei csv. Lo script accetta i seguenti argomenti:
-- `Question_and_categories_csv`: nome del csv contenente i testi e le categorie delle domande da inserire;
+- `Questions_and_categories_csv`: nome del csv contenente i testi e le categorie delle domande da inserire;
     - header atteso = `QuestionCategory | QuestionText | QuestionPhrasing`;
     - è già stato reso disponibile un [file](./questions.csv) da usare come paramentro per questo argomento;
 - `Attribute_csv`: nome del csv contenente i valori assegnati alle features di ogni performance;

@@ -33,8 +33,26 @@ user_mapping_dict = {
 }
 
 
-
 # Create your views here.
+
+def test(request):
+    return render(
+        request,
+        'polls/test.html',
+        context={
+            'performance':Performance.objects.get_or_create(
+                name='testPerformance',
+                year=2022,
+                duration=120,
+                link="https://www.youtube.com/embed/O91DT1pR1ew"
+            )[0],
+            'musicGenre':'test1',
+            "AITechnique":'test2',
+            'categories':Category.objects.all().order_by('?'),
+            'likertValues':range(1,6),
+            'userMappedStr':'loljknoidea'
+        }
+    )
 
 # gestisce la homepage del sito
 def homepage(request):

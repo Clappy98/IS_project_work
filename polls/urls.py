@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
+    path('test/', views.test, name='test'),
     path('prepare/', views.prepareUser, name='prepareUser'),
     path('<str:userMappedStr>/', include([
         path('background/', include([
