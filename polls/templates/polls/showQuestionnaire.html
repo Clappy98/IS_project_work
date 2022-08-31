@@ -5,6 +5,12 @@
 {% endblock title %}
 
 {% block content %}
+    <style>
+        .my_td {
+            border:none
+        }
+    </style>
+
     <div style="height: 10%;">
         <h1>Questionario su {{performance.name}}</h1>
     </div>
@@ -43,25 +49,19 @@
                     <h3><b>{{category.name}}</b></h3>
                     {% for entry in category.questioncategory_set.all %}
                         <p>{{entry.question.text}}</p>
-                        <div class="text-secondary" style="font-size: 12px;">
-                            {% for i in likertValues %}
-                                {% if i == 1 %}
-                                    Strongly Disagree   
-                                {% endif %}
-                                <div class="form-check form-check-inline mx-3">
-                                    <input class="form-check-input" type="radio" id="{{entry.question.text}}_{{i}}" name="{{entry.question.text}}" value="{{i}}" required>
-                                    <script>
-                                        var elem = document.getElementById("{{entry.question.text}}_{{i}}")
-                                        elem.style.fontSize = 15 + Math.abs(elem.value - 3)*5;
-                                        console.log("{{i}}")
-                                    </script>
-                                </div>
-                                {% if i == 5 %}
-                                    Strongly Agree<br><br>
-                                {% endif %}
-                                
-                            {% endfor %}
-                        </div>
+                        <table class="table text-center text-secondary table-responsive">
+                               <tbody>
+                                    <tr>
+                                        <td class="my_td">Strongly Disagree</td>
+                                        <td class="my_td"><input class="form-check-input" style="height: 25px; width: 25px;" type="radio" name="{{entry.question.text}}" id="{{entry.question.text}}_1" value="1" required></td>
+                                        <td class="my_td"><input class="form-check-input" style="height: 20px; width: 20px; margin-top: 5px;" type="radio" name="{{entry.question.text}}" id="{{entry.question.text}}_2" value="2" required></td>
+                                        <td class="my_td"><input class="form-check-input" style="height: 15px; width: 15px; margin-top: 10px" type="radio" name="{{entry.question.text}}" id="{{entry.question.text}}_3" value="3" required></td>
+                                        <td class="my_td"><input class="form-check-input" style="height: 20px; width: 20px; margin-top: 5px" type="radio" name="{{entry.question.text}}" id="{{entry.question.text}}_4" value="4" required></td>
+                                        <td class="my_td"><input class="form-check-input" style="height: 25px; width: 25px;" type="radio" name="{{entry.question.text}}" id="{{entry.question.text}}_5" value="5" required></td>
+                                        <td class="my_td">Strongly Agree</td>
+                                    </tr>
+                               </tbody>
+                            </table> 
                     {% endfor %}
                 </div>
                 <br>
