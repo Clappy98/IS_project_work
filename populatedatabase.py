@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import sys
 import getopt
 import os
@@ -10,8 +11,11 @@ django.setup()
 import polls.models as models
 
 # header = PerformanceName - Duration - Year - Link
-def insert_performances(filename, sep):
-    df = pd.read_csv(filename, sep=sep)
+def insert_performances(filename):
+    df = pd.read_csv(filename, sep=None)
+
+    # pandas è stupido e non conosce cosa significhi salvare un valore nullo come un valore nullo
+    df = df.replace({np.nan:None})
 
     for row in df.itertuples():
         models.Performance.objects.get_or_create(
@@ -23,8 +27,9 @@ def insert_performances(filename, sep):
 
 
 # header = QuestionCategory - QuestionText - QuestionPhrasing
-def insert_questions_and_categories(filename, sep):  
-    df = pd.read_csv(filename, sep=sep)
+def insert_questions_and_categories(filename):  
+    df = pd.read_csv(filename, sep=None)
+    df = df.replace({np.nan:None})
 
     '''
     Used get_or_create() method to ensure that
@@ -52,8 +57,9 @@ def insert_questions_and_categories(filename, sep):
 
 ''' Performances should already exist, must find a solution '''
 # header = PerformanceName - AttributeName - Value
-def insert_attributes(filename, sep):
-    df = pd.read_csv(filename, sep=sep)
+def insert_attributes(filename):
+    df = pd.read_csv(filename, sep=None)
+    df = df.replace({np.nan:None})
 
     for row in df.itertuples():
         p = models.Performance.objects.get(pk=row.PerformanceName)
@@ -72,8 +78,9 @@ def insert_attributes(filename, sep):
 ''' Performances should already exist, must find a solution '''
 ''' Questions should already exist, must find a solution '''
 # header = UserID - UserBg - PerformanceName - Question - Answer
-def load_preexisting_evaluation(filename, sep):
-    df = pd.read_csv(filename, sep=sep)
+def load_preexisting_evaluation(filename):
+    df = pd.read_csv(filename, sep=None)
+    df = df.replace({np.nan:None})
 
     for row in df.itertuples():
         u, _ = models.User.objects.get_or_create(pk=row.UserID)
@@ -93,7 +100,7 @@ def load_preexisting_evaluation(filename, sep):
             user=u,
             performance=p,
             question=q,
-            value=row.Value
+            value=row.Answer
         )
 
 
@@ -122,8 +129,7 @@ for opt in opts:
         print(f"Loading questions and categories from <{opt[1]}>")
 
         insert_questions_and_categories(
-            filename=opt[1],
-            sep=';'
+            filename=opt[1]
         )
 
         print(f"Loaded questions and categories")
@@ -132,8 +138,7 @@ for opt in opts:
         print(f"Loading attributes from <{opt[1]}>")
 
         insert_attributes(
-            filename=opt[1], 
-            sep=';'
+            filename=opt[1] 
         )
 
         print(f"Loaded attributes")
@@ -142,8 +147,7 @@ for opt in opts:
         print(f'Loading performance from {opt[1]}')
 
         insert_performances(
-            filename=opt[1],
-            sep=';'
+            filename=opt[1]
         )
 
         print(f'Loaded performances')
@@ -152,8 +156,7 @@ for opt in opts:
         print(f"Loading evaluations from <{opt[1]}>")
 
         load_preexisting_evaluation(
-            filename=opt[1],
-            sep=';'
+            filename=opt[1]
         )
 
         print(f"Loaded evaluations")

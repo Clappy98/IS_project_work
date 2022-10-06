@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django.db.models import Model
 from django.http import HttpResponse, HttpResponseRedirect
 import random
+import hashlib
 import string
 
 from django.urls import reverse
@@ -31,6 +33,10 @@ def remove_user_mapping(str):
 # la compilazione
 user_mapping_dict = {
 }
+
+# codifica sha dell'id dell'user
+def get_sha():
+    pass
 
 
 # Create your views here.
@@ -70,6 +76,7 @@ def homepage(request):
 # dopo aver cliccato su 'Avvia Questionario' viene generato
 # un utente e la sua stringa identificativa
 def prepareUser(request):
+    #user = get_sha()
     user = User.objects.create()
 
     userMappedStr = get_random_string_from_user(user.pk)
@@ -114,16 +121,24 @@ def manageBackgroundSelection(request, userMappedStr, bg):
 # è assicurato che ci sia almeno una performance, altrimenti non
 # si potrebbe arrivare a questo URL
 def prepareQuestionnaire(request, userMappedStr):
-    startingPerformance = Performance.objects.all().order_by('?').first().name
+    startingPerformance = Performance.objects.exclude(link__isnull=True).order_by('?').first().name
 
     return HttpResponseRedirect(reverse('showQuestionnaire', args=[userMappedStr, startingPerformance]))
 
 # mostra la pagina del questionario
 def showQuestionnaire(request, userMappedStr, performanceName):
     performance = Performance.objects.get(pk=performanceName)
-    musicGenre = performance.performancecharacteristic_set.get(attribute='musicGenre').value
-    AITechnique = performance.performancecharacteristic_set.get(attribute='AItechnique').value
-
+    
+    try:
+        musicGenre = performance.performancecharacteristic_set.get(attribute='musicGenre').value
+    except PerformanceCharacteristic.DoesNotExist:
+        musicGenre = "Not defined"
+    
+    try:
+        AITechnique = performance.performancecharacteristic_set.get(attribute='AItechnique').value
+    except PerformanceCharacteristic.DoesNotExist:
+        AITechnique = "Not defined"
+    
     return render(
         request,
         'polls/showQuestionnaire.html',

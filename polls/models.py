@@ -2,20 +2,20 @@ from django.db import models
 
 # Create your models here.
 class User(models.Model):
-    pass    # Django creates ad autoincrementing ID field as pk
+    pass
 
 class Question(models.Model):
     text = models.TextField(primary_key=True)
     is_negative = models.BooleanField()
 
 class Attribute(models.Model):
-    name = models.CharField(max_length=20, primary_key=True)
+    name = models.CharField(max_length=30, primary_key=True)
 
 class Performance(models.Model):
-    name = models.CharField(max_length=20, primary_key=True)
+    name = models.CharField(max_length=30, primary_key=True)
     year = models.IntegerField()
     duration = models.IntegerField()
-    link = models.URLField(blank=True)
+    link = models.URLField(blank=True, null=True)
 
 class Background(models.Model):
     type = models.CharField(max_length=20, primary_key=True)
