@@ -50,8 +50,6 @@ In particolare, saranno creati i seguenti csv con i relativi header:
 - `performances_2022.csv`, header = `PerformanceName | Duration | Year | Link`;
     - `Link` sarà una colonna di valori nulli;
 
-Questo script va eseguito nella stessa cartella in cui sono presenti i dataset degli anni passati.
-
 ### populatedatabase.py
 Questo script serve per popolare il database utilizzando dei csv. Lo script accetta i seguenti argomenti:
 - `Questions_and_categories_csv`: nome del csv contenente i testi e le categorie delle domande da inserire;
@@ -68,6 +66,23 @@ Questo script serve per popolare il database utilizzando dei csv. Lo script acce
 
 Esempio di chiamata a questo script:<br>
 `py populatedatabase.py --Performance_csv=perf.csv --Attribute_csv=attribute.csv`
+
+### questionmanagement.py
+Questo script mette a disposizione delle operazioni base per la gestione del contenuto della piattaforma e può essere chiamato con le seguenti modalità:
+- `addq QUESTION CATEGORY ISNEG`: permette l'inserimento di una domanda all'interno del database;
+    - `QUESTION`: il testo della domanda da inserire, racchiusa tra virgolette;
+    - `CATEGORY`: il nome di una categoria esistente a cui appartiene la domanda;
+    - `ISNEG`: `True` se il fraseggio della frase è negativo, `False` altrimenti;
+- `addc CATEGORY`: permette l'inserimento di una categoria all'interno del database;
+    - `CATEGORY`: il nome della categoria da creare;
+- `modifyq TEXTBEFORE TEXTAFTER`: permette di modificare il testo di una domanda esistente;
+    - `TEXTBEFORE`: il testo della domanda da modificare, racchiuso tra virgolette;
+    - `TEXTAFTER`: il nuovo testo della domanda, racchiuso tra virgolette;
+- `deleteq QUESTION`: permette di cancellare una domanda dal database;
+    - `QUESTION`: il testo della domanda da eliminare, racchiuso tra virgolette;
+    
+Esempio di chiamata a questo script:<br>
+`py questionmanagement.py addq "The music is good" Music False`
 
 ## Utilizzo
 Per testare l'applicazione, spostarsi con il terminale all'interno della cartella contenente il file `manage.py` ed eseguire i seguenti comandi:
